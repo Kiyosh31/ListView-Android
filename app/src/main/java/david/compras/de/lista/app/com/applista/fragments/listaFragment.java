@@ -24,7 +24,7 @@ public class listaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.lista_fragment, container, false);
 
-        String[] Data = new String[]{"Elemento1", "Elemento2", "Elemento3", "Elemento4", "Elemento5"};
+        //String[] Data = new String[]{"Elemento1", "Elemento2", "Elemento3", "Elemento4", "Elemento5"};
 
         //mecanismo de vistas para guardar algo
         rootView.setTag(TAG);
@@ -33,8 +33,13 @@ public class listaFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.lista);
         //vista
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        //cursor
+        Cursor myCursor = new Cursor();
+
         //adaptador
-        adapter = new listaAdapter(Data);
+        //el adatpadot debe recibir un conexto y un cursor
+        adapter = new listaAdapter(getActivity().getApplicationContext(), myCursor);
         recyclerView.setAdapter(adapter);
 
         return rootView;
