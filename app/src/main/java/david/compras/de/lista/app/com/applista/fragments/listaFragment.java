@@ -1,5 +1,7 @@
 package david.compras.de.lista.app.com.applista.fragments;
 
+import android.database.Cursor;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
+
 import david.compras.de.lista.app.com.applista.R;
 import david.compras.de.lista.app.com.applista.adapters.listaAdapter;
+import david.compras.de.lista.app.com.applista.helpers.dataBaseHelper;
 
 /**
  * Created by david on 12/12/2016.
@@ -18,6 +23,7 @@ import david.compras.de.lista.app.com.applista.adapters.listaAdapter;
 public class listaFragment extends Fragment {
     RecyclerView recyclerView;
     listaAdapter adapter;
+    dataBaseHelper myDBHelper;
 
     private static final String TAG ="RecyclerViewFragment";
 
@@ -34,13 +40,32 @@ public class listaFragment extends Fragment {
         //vista
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        //cursor
-        Cursor myCursor = new Cursor();
+        myDBHelper = new dataBaseHelper(getActivity().getApplicationContext());
+        try
+        {
+            myDBHelper.createDataBase();
+        }
+        catch (IOException e)
+        {
+            throw new Error("No se puede crear DB");
+        }
 
-        //adaptador
-        //el adatpadot debe recibir un conexto y un cursor
-        adapter = new listaAdapter(getActivity().getApplicationContext(), myCursor);
-        recyclerView.setAdapter(adapter);
+        //cursor
+        try
+        {
+            Cursor myCursor = myDBHelper.fetchAllList();
+
+            if(myCursor != null)
+            {
+                adapter = new listaAdapter(getActivity().getApplicationContext(), myCursor);
+                recyclerView.setAdapter(adapter);
+            }
+
+        }
+        catch (SQLException e)
+        {
+
+        }
 
         return rootView;
     }

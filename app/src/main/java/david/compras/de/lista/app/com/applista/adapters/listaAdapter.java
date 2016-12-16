@@ -26,7 +26,7 @@ public class listaAdapter extends RecyclerView.Adapter<listaAdapter.ViewHolder> 
         //cursor
         myCursorAdapter = new CursorAdapter(myContext, cursor, 0) {
             @Override
-            public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+            public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 LayoutInflater inflater = LayoutInflater.from(parent.getContext());
                 View retView = inflater.inflate(R.layout.item, parent, false);
 
