@@ -144,4 +144,15 @@ public class dataBaseHelper extends SQLiteOpenHelper {
 
         return myCursor;
     }
+
+    public Cursor fetchItemsList(String lista) throws SQLException{
+        Cursor cursor = myDataBase.rawQuery("SELECT * FROM" + lista, null);
+
+        if(cursor != null)
+        {
+            cursor.moveToFirst();
+        }
+
+        return cursor;
+    }
 }
